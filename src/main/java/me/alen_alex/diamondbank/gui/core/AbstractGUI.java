@@ -15,9 +15,17 @@ public abstract class AbstractGUI {
         this.manager = manager;
     }
 
-    public abstract void initGui();
 
-    public abstract void openMenuFor(@NotNull Player player);
+    public void openMenuFor(@NotNull Player player){
+        prepareGUI(player).thenAccept((menu) -> {
+            manager.getPlugin().getServer().getScheduler().runTask(manager.getPlugin(), new Runnable() {
+                @Override
+                public void run() {
+                    menu.open(player);
+                }
+            });
+        });
+    }
 
     public abstract CompletableFuture<Gui> prepareGUI(@NotNull Player player);
 }

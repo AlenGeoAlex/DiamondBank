@@ -21,24 +21,6 @@ public class BankMenu extends AbstractGUI {
     }
 
     @Override
-    public void initGui() {
-    }
-
-    @Override
-    public void openMenuFor(@NotNull Player player) {
-        prepareGUI(player).handle((menu,e) -> {
-            manager.getPlugin().getServer().getScheduler().runTask(manager.getPlugin(), new Runnable() {
-                @Override
-                public void run() {
-                    menu.open(player);
-                }
-            });
-            e.printStackTrace();
-            return null;
-        });
-    }
-
-    @Override
     public CompletableFuture<Gui> prepareGUI(@NotNull Player player) {
         return CompletableFuture.supplyAsync(new Supplier<Gui>() {
             @Override
@@ -74,7 +56,13 @@ public class BankMenu extends AbstractGUI {
                         .name(MessageUtils.serializeToComponent(manager.getPlugin().getConfiguration().getMainDepositButton().getName()))
                         .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getMainDepositButton().getLore()))
                         .asGuiItem(event -> {
-                            //TODO open another menu
+                            gui.close(player);
+                            manager.getPlugin().getServer().getScheduler().runTaskLater(manager.getPlugin(), new Runnable() {
+                                @Override
+                                public void run() {
+                                    manager.getDepositMenu().openMenuFor(player);
+                                }
+                            },20);
                         });
 
                 final GuiItem withdrawButton = ItemBuilder.from(manager.getPlugin().getConfiguration().getMainWithdrawButton().getItemStack())
@@ -84,12 +72,10 @@ public class BankMenu extends AbstractGUI {
                             //TODO open another menu
                         });
 
-
                 gui.setItem(manager.getPlugin().getConfiguration().getMainDetailButton().getSlot(),detailButton);
                 gui.setItem(manager.getPlugin().getConfiguration().getMainCloseButton().getSlot(),closeButton);
                 gui.setItem(manager.getPlugin().getConfiguration().getMainDepositButton().getSlot(),depositButton);
                 gui.setItem(manager.getPlugin().getConfiguration().getMainWithdrawButton().getSlot(),withdrawButton);
-
                 return gui;
             }
         });
