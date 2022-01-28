@@ -1,0 +1,70 @@
+##The GUI's are fully configurable.
+gui:
+  #This the main gui
+  bank-gui:
+    name: "&b&lDiamond Bank"
+    size: 3
+    button:
+      close-button:
+        item: "BARRIER"
+        name: "&cClose"
+        slot: 22
+        lore:
+          - "&fClick to close the bank"
+          - "&r"
+          - "&7Found what you are looking for?"
+          - "&7Close the menu and move on :)"
+      deposit-button:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzk3OGYzNWM2Mzg2MGQ2OTRmZWU0YWIzYzM2OTRmZGU0MDQ2Yzk2NmU0YzFiZjA2NjVmODg3NDhmOWY4MDI1In19fQ=="
+        name: "&aDeposit"
+        slot: 11
+        lore:
+          - "&fClick to open the menu"
+          - "&r"
+          - "&7This menu allows you to deposit money into the bank"
+          - "&7Once deposited, you can later withdraw them later!"
+      withdraw-button:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjNmMzM3ZDY5N2Y5ZDkxYWE4MTJlYjJjY2E2MmUzN2M2ZjZiNGEzOGIxMDMxYzFlNjJkMzVjNjgzZjU5ZDE5MiJ9fX0="
+        name: "&eWithdraw"
+        slot: 15
+        lore:
+          - "&fClick to open the menu"
+          - "&r"
+          - "&7You have diamonds on your bank, then withdraw it"
+          - "&7Why waiting!"
+      detail-button:
+        item: "HOPPER"
+        name: "&dAccount"
+        slot: 26
+        lore:
+          - "&7Account ID &8» &f%player_uuid%"
+          - "&7Account Balance &8» &f%balance%"
+    filler:
+      BLACK_STAINED_GLASS_PANE:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 23
+        - 24
+        - 25
+      WHITE_STAINED_GLASS_PANE:
+        - 10
+        - 12
+        - 13
+        - 14
+        - 16
+  deposit-gui:
+    name: "&a&lDeposit Diamond"
+    size: 3

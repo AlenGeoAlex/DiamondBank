@@ -1,0 +1,11 @@
+name: DiamondBank
+version: '${project.version}'
+main: me.alen_alex.diamondbank.DiamondBank
+api-version: 1.18
+authors: [ Alen_Alex ]
+description: "A plugin which allows users to deposit and withdraw diamonds. The plugin is written for Alexioe"
+softdepend:
+  - PlaceholderAPI
+commands:
+  test:
+    description: "Nothing much"
