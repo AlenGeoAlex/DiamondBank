@@ -1,6 +1,7 @@
 package me.alen_alex.diamondbank.model;
 
 import me.alen_alex.diamondbank.enums.TransactionWay;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -51,6 +52,10 @@ public class Transaction {
 
     public static Transaction of(@NotNull String transactionID,@NotNull String pID,int amount,String way,long time){
         return new Transaction(transactionID,pID,amount,way,time);
+    }
+
+    public void asMessage(@NotNull final Player player){
+
     }
 
 }

@@ -95,6 +95,7 @@ public final class Configuration extends AbstractFile {
         this.droppedDiamond = MessageUtils.colorize(this.file.getString("messages.item-dropped-to-ground"));
         this.withdrewDiamonds = MessageUtils.colorize(this.file.getString("messages.withdrawed-diamond"));
         this.reqMinAmount = MessageUtils.colorize(this.file.getString("messages.need-atleast-min-amount"));
+        this.depositedDiamonds = MessageUtils.colorize(this.file.getString("messages.deposited-diamonds"));
     }
 
     public Buttons getMainCloseButton() {

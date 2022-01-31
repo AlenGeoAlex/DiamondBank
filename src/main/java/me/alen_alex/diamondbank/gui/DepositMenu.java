@@ -1,6 +1,7 @@
 package me.alen_alex.diamondbank.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.alen_alex.diamondbank.enums.TransactionWay;
@@ -24,8 +25,8 @@ public class DepositMenu extends AbstractGUI {
     }
 
     @Override
-    public CompletableFuture<Gui> prepareGUI(@NotNull Player player) {
-        return CompletableFuture.supplyAsync(new Supplier<Gui>() {
+    public CompletableFuture<BaseGui> prepareGUI(@NotNull Player player) {
+        return CompletableFuture.supplyAsync(new Supplier<BaseGui>() {
             @Override
             public Gui get() {
                 final Gui gui = Gui.gui()
@@ -51,7 +52,7 @@ public class DepositMenu extends AbstractGUI {
                         return;
                     }
 
-                    if(event.getCurrentItem().getAmount() < manager.getPlugin().getConfiguration().getMinAmountNeededToDeposit()){
+                    if(event.getCurrentItem().getAmount() < manager.getPlugin().getConfiguration().getMinAmountNeededToDeposit() && event.getCurrentItem().getType() == Material.DIAMOND){
                         MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getReqMinAmount(new InternalPlaceholders("%min%",manager.getPlugin().getConfiguration().getMinAmountNeededToDeposit())));
                         event.setCancelled(true);
                         return;

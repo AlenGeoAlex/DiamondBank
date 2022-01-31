@@ -14,10 +14,10 @@ public class Commands {
 
     public static List<String> helpCommand = new ArrayList<>(){{
        add(MessageUtils.colorize("&c------------------------------------"));
-       add(MessageUtils.colorize("&b/bank &7» &fOpens up the Bank GUI"));
-       add(MessageUtils.colorize("&b/bank deposit &7» &fOpens up Deposit GUI"));
-       add(MessageUtils.colorize("&b/bank withdraw &7» &fOpens up Withdraw GUI"));
-       add(MessageUtils.colorize("&b/bank set &6[player] [amount]&7» &fSets the player diamond to the specified value"));
+       add(MessageUtils.colorize("&b/dbank &7» &fOpens up the Bank GUI"));
+       add(MessageUtils.colorize("&b/dbank deposit &7» &fOpens up Deposit GUI"));
+       add(MessageUtils.colorize("&b/dbank withdraw &7» &fOpens up Withdraw GUI"));
+       add(MessageUtils.colorize("&b/dbank set &6[player] [amount]&7» &fSets the player diamond to the specified value"));
        add(MessageUtils.colorize("&c------------------------------------"));
     }};
 

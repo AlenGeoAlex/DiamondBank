@@ -50,9 +50,9 @@ public final class DiamondBank extends JavaPlugin {
 
 
         commandManager.initCommand();
-
+        new PlaceholderAPI(this).register();
         //Remove Later
-        getCommand("test").setExecutor(new TestCase(this));
+        //getCommand("test").setExecutor(new TestCase(this));
     }
 
     @Override

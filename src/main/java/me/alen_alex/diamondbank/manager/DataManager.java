@@ -9,7 +9,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class DataManager {
 
@@ -66,5 +68,8 @@ public class DataManager {
         plugin.getStorage().getStorageEngine().addAsyncTransactionLog(transaction);
     }
 
+    public CompletableFuture<List<Transaction>> getTransactionsOf(@NotNull Player player){
+        return plugin.getStorage().getStorageEngine().getPlayerTransaction(player.getUniqueId());
+    }
 
 }

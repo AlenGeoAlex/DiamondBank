@@ -1,6 +1,7 @@
 package me.alen_alex.diamondbank.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.alen_alex.diamondbank.gui.core.AbstractGUI;
@@ -21,8 +22,8 @@ public class BankMenu extends AbstractGUI {
     }
 
     @Override
-    public CompletableFuture<Gui> prepareGUI(@NotNull Player player) {
-        return CompletableFuture.supplyAsync(new Supplier<Gui>() {
+    public CompletableFuture<BaseGui> prepareGUI(@NotNull Player player) {
+        return CompletableFuture.supplyAsync(new Supplier<BaseGui>() {
             @Override
             public Gui get() {
                 final Gui gui =  Gui.gui()

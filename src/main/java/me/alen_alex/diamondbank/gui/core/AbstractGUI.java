@@ -1,6 +1,7 @@
 package me.alen_alex.diamondbank.gui.core;
 
 
+import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,5 +28,5 @@ public abstract class AbstractGUI {
         });
     }
 
-    protected abstract CompletableFuture<Gui> prepareGUI(@NotNull Player player);
+    protected abstract CompletableFuture<BaseGui> prepareGUI(@NotNull Player player);
 }

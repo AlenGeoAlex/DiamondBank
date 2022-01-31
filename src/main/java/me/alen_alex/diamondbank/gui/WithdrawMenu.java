@@ -1,6 +1,7 @@
 package me.alen_alex.diamondbank.gui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import me.alen_alex.diamondbank.enums.TransactionWay;
@@ -9,6 +10,7 @@ import me.alen_alex.diamondbank.gui.core.GUIManager;
 import me.alen_alex.diamondbank.model.Transaction;
 import me.alen_alex.diamondbank.utils.InternalPlaceholders;
 import me.alen_alex.diamondbank.utils.modules.MessageUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +25,8 @@ public class WithdrawMenu extends AbstractGUI {
     }
 
     @Override
-    public CompletableFuture<Gui> prepareGUI(@NotNull Player player) {
-        return CompletableFuture.supplyAsync(new Supplier<Gui>() {
+    public CompletableFuture<BaseGui> prepareGUI(@NotNull Player player) {
+        return CompletableFuture.supplyAsync(new Supplier<BaseGui>() {
             @Override
             public Gui get() {
                 final Gui gui = Gui.gui()
@@ -235,14 +237,15 @@ public class WithdrawMenu extends AbstractGUI {
                                 return;
 
                             gui.close(player);
+                            final ItemStack withdrawedDiamonds = new ItemStack(Material.DIAMOND,stack.getAmount());
                             if(player.getInventory().firstEmpty() == -1){
                                 MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getNoSpace());
                                 if(manager.getPlugin().getConfiguration().isDropOnFull()){
-                                    player.getWorld().dropItem(player.getLocation(),stack);
+                                    player.getWorld().dropItem(player.getLocation(),withdrawedDiamonds);
                                     MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getDroppedDiamond());
                                 }else return;
                             }else {
-                                player.getInventory().addItem(stack);
+                                player.getInventory().addItem(withdrawedDiamonds);
                             }
                             final Transaction newTrans = new Transaction(player.getUniqueId(),stack.getAmount(), TransactionWay.WITHDRAW);
                             manager.getPlugin().getManager().processTransaction(newTrans);
