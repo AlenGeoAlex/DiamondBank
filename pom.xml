@@ -45,6 +45,10 @@
                                     <pattern>de.leonhard.storage</pattern>
                                     <shadedPattern>me.alen_alex.diamondbank.shaded.storage</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>me.mattstudios.mf</pattern>
+                                    <shadedPattern>me.alen_alex.diamondbank.shaded.mf</shadedPattern> <!-- Replace package here here -->
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>

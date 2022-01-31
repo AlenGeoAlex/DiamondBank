@@ -40,12 +40,14 @@ public class BankMenu extends AbstractGUI {
                 final GuiItem closeButton = ItemBuilder.from(manager.getPlugin().getConfiguration().getMainCloseButton().getItemStack())
                         .name(MessageUtils.serializeToComponent(manager.getPlugin().getConfiguration().getMainCloseButton().getName()))
                         .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getMainCloseButton().getLore()))
+                        .amount(manager.getPlugin().getConfiguration().getMainCloseButton().getAmount())
                         .asGuiItem(event -> {
                             gui.close(player);
                         });
 
                 final GuiItem detailButton = ItemBuilder.from(manager.getPlugin().getConfiguration().getMainDetailButton().getItemStack())
                         .name(MessageUtils.serializeToComponent(manager.getPlugin().getConfiguration().getMainDetailButton().getName()))
+                        .amount(manager.getPlugin().getConfiguration().getMainDetailButton().getAmount())
                         .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getMainDetailButton().getLore(
                                 new InternalPlaceholders("%balance%",manager.getPlugin().getManager().getPlayerData(player).getPlayerDiamond()),
                                 new InternalPlaceholders("%player_uuid%",player.getUniqueId())
@@ -54,6 +56,7 @@ public class BankMenu extends AbstractGUI {
 
                 final GuiItem depositButton = ItemBuilder.from(manager.getPlugin().getConfiguration().getMainDepositButton().getItemStack())
                         .name(MessageUtils.serializeToComponent(manager.getPlugin().getConfiguration().getMainDepositButton().getName()))
+                        .amount(manager.getPlugin().getConfiguration().getMainDepositButton().getAmount())
                         .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getMainDepositButton().getLore()))
                         .asGuiItem(event -> {
                             gui.close(player);
@@ -62,14 +65,21 @@ public class BankMenu extends AbstractGUI {
                                 public void run() {
                                     manager.getDepositMenu().openMenuFor(player);
                                 }
-                            },20);
+                            },11);
                         });
 
                 final GuiItem withdrawButton = ItemBuilder.from(manager.getPlugin().getConfiguration().getMainWithdrawButton().getItemStack())
                         .name(MessageUtils.serializeToComponent(manager.getPlugin().getConfiguration().getMainWithdrawButton().getName()))
+                        .amount(manager.getPlugin().getConfiguration().getMainWithdrawButton().getAmount())
                         .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getMainWithdrawButton().getLore()))
                         .asGuiItem(event -> {
-                            //TODO open another menu
+                            gui.close(player);
+                            manager.getPlugin().getServer().getScheduler().runTaskLater(manager.getPlugin(), new Runnable() {
+                                @Override
+                                public void run() {
+                                    manager.getWithdrawMenu().openMenuFor(player);
+                                }
+                            },11);
                         });
 
                 gui.setItem(manager.getPlugin().getConfiguration().getMainDetailButton().getSlot(),detailButton);

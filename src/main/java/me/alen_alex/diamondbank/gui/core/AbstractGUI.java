@@ -27,5 +27,5 @@ public abstract class AbstractGUI {
         });
     }
 
-    public abstract CompletableFuture<Gui> prepareGUI(@NotNull Player player);
+    protected abstract CompletableFuture<Gui> prepareGUI(@NotNull Player player);
 }

@@ -1,5 +1,16 @@
+##Minimum amount of diamond that needed to be deposited
+min-amount-needed-to-deposit: 1
 
+##When cancelling/closing an inventory, and the players inventory is full, should we drop it?
 drop-if-inventory-is-full: true
+
+messages:
+  not-enough-space: "&cThere is not enough free slot in your inventory"
+  item-dropped-to-ground: "&eThe diamond has been dropped to the ground"
+  withdrawed-diamond: "&aYou have withdrew %amount% diamonds"
+  deposited-diamonds: "&aYou have deposited %amount% diamonds"
+  need-atleast-min-amount: "&eYou need to select at-least the %min% diamonds to deposit"
+
 
 ##The GUI's are fully configurable.
 gui:
@@ -11,6 +22,7 @@ gui:
       close-button:
         item: "BARRIER"
         name: "&cClose"
+        amount: 1
         slot: 22
         lore:
           - "&fClick to close the bank"
@@ -20,6 +32,7 @@ gui:
       deposit-button:
         item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzk3OGYzNWM2Mzg2MGQ2OTRmZWU0YWIzYzM2OTRmZGU0MDQ2Yzk2NmU0YzFiZjA2NjVmODg3NDhmOWY4MDI1In19fQ=="
         name: "&aDeposit"
+        amount: 1
         slot: 11
         lore:
           - "&fClick to open the menu"
@@ -29,6 +42,7 @@ gui:
       withdraw-button:
         item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjNmMzM3ZDY5N2Y5ZDkxYWE4MTJlYjJjY2E2MmUzN2M2ZjZiNGEzOGIxMDMxYzFlNjJkMzVjNjgzZjU5ZDE5MiJ9fX0="
         name: "&eWithdraw"
+        amount: 1
         slot: 15
         lore:
           - "&fClick to open the menu"
@@ -37,6 +51,7 @@ gui:
           - "&7Why waiting!"
       detail-button:
         item: "HOPPER"
+        amount: 1
         name: "&dAccount"
         slot: 26
         lore:
@@ -68,12 +83,14 @@ gui:
         - 13
         - 14
         - 16
+####This is the deposit GUI
   deposit-gui:
     name: "&a&lDeposit Diamond"
     size: 5
     button:
       close-button:
         item: "BARRIER"
+        amount: 1
         name: "&cClose"
         slot: 40
         lore:
@@ -84,16 +101,20 @@ gui:
       deposit-button:
         item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWI4ZmUxYzQ0YWNiZWViOTE4ZDM4YmM0MmQ1NTBiZWRkNWMzZGQwNDk4ODlmZDllZWVhMTE2MGFiOGI2YSJ9fX0="
         name: "&6Deposit your Diamond here!"
+        amount: 1
         slot: 22
         lore:
           - "&fDrop the amount of diamond"
           - "&fyou wish to deposit into the bank"
           - "&r"
           - "&7&lShift + LeftClick &r&7the diamond from "
-          - "&7your hot-bar to deposit diamond"
+          - "&7your hot-bar to deposit diamond."
+          - "&c&lNOTE: &7You should deposit atleast of"
+          - "&7%min-deposit% diamonds to start the transaction."
       confirmation-yes:
         item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWRmNzgyY2FlMmRkNTM5N2M0ODQ1ZmUxNGZiYTM2MTcyNDZkM2M0ZmE1NTAxMGQyMWJiNjIxNGJlMTM3YmQifX19"
         name: "&aFinalize Transaction"
+        amount: 1
         slot: 30
         lore:
           - "&fClick to deposit money in the bank"
@@ -103,6 +124,136 @@ gui:
       confirmation-no:
         item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZkZTNiZmNlMmQ4Y2I3MjRkZTg1NTZlNWVjMjFiN2YxNWY1ODQ2ODRhYjc4NTIxNGFkZDE2NGJlNzYyNGIifX19"
         name: "&cCancel Transaction"
+        amount: 1
+        slot: 32
+        lore:
+          - "&fClick to cancel the deposit"
+          - "&r"
+          - "&7You doubt the amount?"
+          - "&7You doubt whether its safe?"
+          - "&7Well! you can rethink now!"
+    filler:
+      BLACK_STAINED_GLASS_PANE:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 18
+        - 27
+        - 36
+        - 37
+        - 38
+        - 39
+        - 41
+        - 42
+        - 43
+        - 44
+        - 35
+        - 26
+        - 17
+####This is the withdraw GUI
+  withdraw-button:
+    name: "&e&lWithdraw Diamond"
+    size: 5
+    button:
+      diamond-placeholder:
+        item: "DIAMOND"
+        name: "&bWithdraw Diamond"
+        amount: 1
+        slot: 22
+        lore:
+          - "&fChoose diamonds from your bank"
+          - "&r"
+          - "&7Once selected, click on the finalize deal"
+          - "&7withdraw the amount from bank"
+      diamond-placeholder-zero-bal:
+        item: "RED_STAINED_GLASS_PANE"
+        name: "&c&lYou have no diamonds"
+        amount: 1
+        slot: 22
+        lore:
+          - "&fYour current diamond balance is 0"
+          - "&r"
+          - "&7Deposit some diamonds into the bank to "
+          - "&7start withdrawing them"
+      close-button:
+        item: "BARRIER"
+        name: "&cClose"
+        amount: 1
+        slot: 40
+        lore:
+          - "&fClick to close the bank"
+          - "&r"
+          - "&7Found what you are looking for?"
+          - "&7Close the menu and move on :)"
+      add-one:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODg5OTE2OTc0Njk2NTNjOWFmODM1MmZkZjE4ZDBjYzljNjc3NjNjZmU2NjE3NWMxNTU2YWVkMzMyNDZjNyJ9fX0="
+        amount: 1
+        name: "&a+1 &bDiamond"
+        slot: 21
+        lore:
+          - "&fIncrease the amount of"
+          - "&fdiamond by 1"
+      add-five:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTJjMTQyYWY1OWYyOWViMzVhYjI5YzZhNDVlMzM2MzVkY2ZjMmE5NTZkYmQ0ZDJlNTU3MmIwZDM4ODkxYjM1NCJ9fX0="
+        amount: 1
+        name: "&a+5 &bDiamond"
+        slot: 20
+        lore:
+          - "&fIncrease the amount of"
+          - "&fdiamond by 5"
+      add-ten:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGJmNjhjNzMxMDg3NTI2N2VlYzJhYzVhYTZjZGIzYTkxZjIyZDU5OThhMzgwYTRjZWM5MmFhZmFmNmQ3MCJ9fX0="
+        amount: 1
+        name: "&a+10 &bDiamond"
+        slot: 19
+        lore:
+          - "&fIncrease the amount of"
+          - "&fdiamond by 10"
+      reduce-one:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGQyNDU0ZTRjNjdiMzIzZDViZTk1M2I1YjNkNTQxNzRhYTI3MTQ2MDM3NGVlMjg0MTBjNWFlYWUyYzExZjUifX19"
+        amount: 1
+        name: "&c-1 &bDiamond"
+        slot: 23
+        lore:
+          - "&fReduce the amount of"
+          - "&fdiamond by 1"
+      reduce-five:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGYzZjU2NWE4ODkyOGVlNWE5ZDY4NDNkOTgyZDc4ZWFlNmI0MWQ5MDc3ZjJhMWU1MjZhZjg2N2Q3OGZiIn19fQ=="
+        amount: 1
+        name: "&c-5 &bDiamond"
+        slot: 24
+        lore:
+          - "&fReduce the amount of"
+          - "&fdiamond by 5"
+      reduce-ten:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjU5ODdmNDNmZjU3ZDRkYWJhYTJkMmNlYjlmMDFmYzZlZTQ2ZGIxNjJhNWUxMmRmZGJiNTdmZDQ2ODEzMmI4In19fQ=="
+        amount: 1
+        name: "&c-10 &bDiamond"
+        slot: 25
+        lore:
+          - "&fReduce the amount of"
+          - "&fdiamond by 10"
+      confirmation-yes:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWRmNzgyY2FlMmRkNTM5N2M0ODQ1ZmUxNGZiYTM2MTcyNDZkM2M0ZmE1NTAxMGQyMWJiNjIxNGJlMTM3YmQifX19"
+        name: "&aFinalize Transaction"
+        amount: 1
+        slot: 30
+        lore:
+          - "&fClick to withdraw money from the bank"
+          - "&r"
+          - "&7This will finalize the transaction"
+          - "&7and transfer the diamond into your inventory"
+      confirmation-no:
+        item: "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZkZTNiZmNlMmQ4Y2I3MjRkZTg1NTZlNWVjMjFiN2YxNWY1ODQ2ODRhYjc4NTIxNGFkZDE2NGJlNzYyNGIifX19"
+        name: "&cCancel Transaction"
+        amount: 1
         slot: 32
         lore:
           - "&fClick to cancel the deposit"

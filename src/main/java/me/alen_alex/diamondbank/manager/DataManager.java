@@ -1,7 +1,9 @@
 package me.alen_alex.diamondbank.manager;
 
 import me.alen_alex.diamondbank.DiamondBank;
+import me.alen_alex.diamondbank.enums.TransactionWay;
 import me.alen_alex.diamondbank.model.PlayerData;
+import me.alen_alex.diamondbank.model.Transaction;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,5 +48,23 @@ public class DataManager {
     public Iterator<PlayerData> getIteratorForPlayerData(){
         return playerDataHashMap.values().iterator();
     }
+
+    public void processTransaction(@NotNull Transaction transaction){
+        if(!playerDataHashMap.containsKey(transaction.getUuid()))
+            return;
+
+        final PlayerData data = getPlayerData(transaction.getUuid());
+        if(transaction.getWay() == TransactionWay.DEPOSIT) {
+            data.addPlayerDiamond(transaction.getAmount());
+        }else {
+            data.reducePlayerDiamond(transaction.getAmount());
+
+
+        }
+
+        plugin.getStorage().getStorageEngine().saveAsync(data);
+        plugin.getStorage().getStorageEngine().addAsyncTransactionLog(transaction);
+    }
+
 
 }

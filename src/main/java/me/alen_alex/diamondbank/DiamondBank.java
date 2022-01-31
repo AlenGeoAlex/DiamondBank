@@ -1,5 +1,6 @@
 package me.alen_alex.diamondbank;
 
+import me.alen_alex.diamondbank.command.Commands;
 import me.alen_alex.diamondbank.config.Configuration;
 import me.alen_alex.diamondbank.gui.core.GUIManager;
 import me.alen_alex.diamondbank.listener.PlayerConnectionListener;
@@ -7,6 +8,7 @@ import me.alen_alex.diamondbank.manager.DataManager;
 import me.alen_alex.diamondbank.storage.core.StorageHandler;
 import me.alen_alex.diamondbank.test.TestCase;
 import me.alen_alex.diamondbank.utils.UtilityManager;
+import me.mattstudios.mf.base.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class DiamondBank extends JavaPlugin {
@@ -16,6 +18,7 @@ public final class DiamondBank extends JavaPlugin {
     private StorageHandler storage;
     private DataManager manager;
     private GUIManager guiManager;
+    private Commands commandManager;
 
     @Override
     public void onEnable() {
@@ -24,6 +27,7 @@ public final class DiamondBank extends JavaPlugin {
         this.storage = new StorageHandler(this);
         this.manager = new DataManager(this);
         this.guiManager = new GUIManager(this);
+        this.commandManager = new Commands(this);
 
         if(!configuration.initConfig()){
             getLogger().severe("Unable to instantiate configuration class, The plugin wil be disabled!");
@@ -43,6 +47,9 @@ public final class DiamondBank extends JavaPlugin {
         guiManager.initAllMenus();
 
         getServer().getPluginManager().registerEvents(new PlayerConnectionListener(this),this);
+
+
+        commandManager.initCommand();
 
         //Remove Later
         getCommand("test").setExecutor(new TestCase(this));
@@ -77,5 +84,9 @@ public final class DiamondBank extends JavaPlugin {
 
     public GUIManager getGuiManager() {
         return guiManager;
+    }
+
+    public Commands getCommandManager() {
+        return commandManager;
     }
 }

@@ -4,6 +4,7 @@ import me.alen_alex.diamondbank.DiamondBank;
 import me.alen_alex.diamondbank.config.core.AbstractFile;
 import me.alen_alex.diamondbank.gui.core.button.Buttons;
 import me.alen_alex.diamondbank.gui.core.button.Fillers;
+import me.alen_alex.diamondbank.utils.InternalPlaceholders;
 import me.alen_alex.diamondbank.utils.modules.ItemUtils;
 import me.alen_alex.diamondbank.utils.modules.MessageUtils;
 
@@ -19,15 +20,26 @@ public final class Configuration extends AbstractFile {
     private Buttons mainCloseButton,mainDepositButton,mainWithdrawButton,mainDetailButton;
     private final List<Fillers> mainMenuFillers;
 
+    private int minAmountNeededToDeposit;
+
     private String depositMenuName;
     private int depositMenuSize;
     private Buttons depositCloseButton,depositDepositButton,depositConfirmationYes,depositConfirmationNo;
     private final List<Fillers> depositMenuFillers;
 
+    private String withdrawMenuName;
+    private int withdrawMenuSize;
+    private Buttons withdrawCloseButton,withdrawAddOneButton,withdrawAddFiveButton,withdrawAddTenButton,withdrawRemoveOneButton,withdrawRemoveFiveButton,withdrawRemoveTenButton,withdrawConfirmationYes,withdrawConfirmationNo,withdrawDiamondPlaceholder,withdrawDiamondPlaceholderZeroBalance;
+    private final List<Fillers> withdrawMenuFillers;
+
+
+    private String noSpace,droppedDiamond,withdrewDiamonds,depositedDiamonds,reqMinAmount;
+
     public Configuration(DiamondBank plugin) {
         super(plugin);
         this.mainMenuFillers = new ArrayList<>();
         this.depositMenuFillers = new ArrayList<>();
+        this.withdrawMenuFillers = new ArrayList<>();
     }
 
     public boolean initConfig(){
@@ -37,8 +49,10 @@ public final class Configuration extends AbstractFile {
     public void loadConfigurationFile(){
         this.mainMenuFillers.clear();
         this.depositMenuFillers.clear();
+        this.withdrawMenuFillers.clear();
 
         this.dropOnFull = this.file.getBoolean("drop-if-inventory-is-full");
+        this.minAmountNeededToDeposit = this.file.getInt("min-amount-needed-to-deposit");
 
         this.mainMenuName = MessageUtils.colorize(this.file.getString("gui.bank-gui.name"));
         this.mainMenuSize = this.file.getInt("gui.bank-gui.size");
@@ -59,6 +73,28 @@ public final class Configuration extends AbstractFile {
         this.file.singleLayerKeySet("gui.deposit-gui.filler").forEach((stringMaterial) -> {
             this.depositMenuFillers.add(Fillers.buildFrom(ItemUtils.getMaterialFrom(stringMaterial),this.file.getStringList("gui.deposit-gui.filler."+stringMaterial)));
         });
+
+        this.withdrawMenuName = MessageUtils.colorize(this.file.getString("gui.withdraw-button.name"));
+        this.withdrawMenuSize = this.file.getInt("gui.withdraw-button.size");
+        this.withdrawCloseButton = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.close-button"));
+        this.withdrawAddOneButton = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.add-one"));
+        this.withdrawAddFiveButton = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.add-five"));
+        this.withdrawAddTenButton = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.add-ten"));
+        this.withdrawRemoveOneButton = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.reduce-one"));
+        this.withdrawRemoveFiveButton = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.reduce-five"));
+        this.withdrawRemoveTenButton = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.reduce-ten"));
+        this.withdrawConfirmationYes = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.confirmation-yes"));
+        this.withdrawConfirmationNo = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.confirmation-no"));
+        this.withdrawDiamondPlaceholder = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.diamond-placeholder"));
+        this.withdrawDiamondPlaceholderZeroBalance = Buttons.buildButtons(getSectionOf("gui.withdraw-button.button.diamond-placeholder-zero-bal"));
+        this.file.singleLayerKeySet("gui.withdraw-button.filler").forEach(stringMaterial -> {
+            withdrawMenuFillers.add(Fillers.buildFrom(ItemUtils.getMaterialFrom(stringMaterial),this.file.getStringList("gui.withdraw-button.filler."+stringMaterial)));
+        });
+
+        this.noSpace = MessageUtils.colorize(this.file.getString("messages.not-enough-space"));
+        this.droppedDiamond = MessageUtils.colorize(this.file.getString("messages.item-dropped-to-ground"));
+        this.withdrewDiamonds = MessageUtils.colorize(this.file.getString("messages.withdrawed-diamond"));
+        this.reqMinAmount = MessageUtils.colorize(this.file.getString("messages.need-atleast-min-amount"));
     }
 
     public Buttons getMainCloseButton() {
@@ -119,6 +155,86 @@ public final class Configuration extends AbstractFile {
 
     public boolean isDropOnFull() {
         return dropOnFull;
+    }
+
+    public int getMinAmountNeededToDeposit() {
+        return minAmountNeededToDeposit;
+    }
+
+    public String getWithdrawMenuName() {
+        return withdrawMenuName;
+    }
+
+    public int getWithdrawMenuSize() {
+        return withdrawMenuSize;
+    }
+
+    public List<Fillers> getWithdrawMenuFillers() {
+        return withdrawMenuFillers;
+    }
+
+    public Buttons getWithdrawCloseButton() {
+        return withdrawCloseButton;
+    }
+
+    public Buttons getWithdrawAddOneButton() {
+        return withdrawAddOneButton;
+    }
+
+    public Buttons getWithdrawAddFiveButton() {
+        return withdrawAddFiveButton;
+    }
+
+    public Buttons getWithdrawAddTenButton() {
+        return withdrawAddTenButton;
+    }
+
+    public Buttons getWithdrawRemoveOneButton() {
+        return withdrawRemoveOneButton;
+    }
+
+    public Buttons getWithdrawRemoveFiveButton() {
+        return withdrawRemoveFiveButton;
+    }
+
+    public Buttons getWithdrawRemoveTenButton() {
+        return withdrawRemoveTenButton;
+    }
+
+    public Buttons getWithdrawConfirmationYes() {
+        return withdrawConfirmationYes;
+    }
+
+    public Buttons getWithdrawConfirmationNo() {
+        return withdrawConfirmationNo;
+    }
+
+    public Buttons getWithdrawDiamondPlaceholder() {
+        return withdrawDiamondPlaceholder;
+    }
+
+    public Buttons getWithdrawDiamondPlaceholderZeroBalance() {
+        return withdrawDiamondPlaceholderZeroBalance;
+    }
+
+    public String getNoSpace() {
+        return noSpace;
+    }
+
+    public String getDroppedDiamond() {
+        return droppedDiamond;
+    }
+
+    public String getWithdrewDiamonds(InternalPlaceholders diamondAmount) {
+        return diamondAmount.replacePlaceholders(withdrewDiamonds);
+    }
+
+    public String getDepositedDiamonds(InternalPlaceholders diamondAmount) {
+        return diamondAmount.replacePlaceholders(depositedDiamonds);
+    }
+
+    public String getReqMinAmount(InternalPlaceholders reqAmount) {
+        return reqAmount.replacePlaceholders(reqMinAmount);
     }
 }
 

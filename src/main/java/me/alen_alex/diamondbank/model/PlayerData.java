@@ -44,4 +44,12 @@ public final class PlayerData {
     public static PlayerData of(UUID uuid){
         return new PlayerData(uuid);
     }
+
+    public void addPlayerDiamond(int toAdd){
+        this.playerDiamond += toAdd;
+    }
+
+    public void reducePlayerDiamond(int toReduce){
+        this.playerDiamond -= toReduce;
+    }
 }

@@ -3,11 +3,15 @@ package me.alen_alex.diamondbank.gui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
+import me.alen_alex.diamondbank.enums.TransactionWay;
 import me.alen_alex.diamondbank.gui.core.AbstractGUI;
 import me.alen_alex.diamondbank.gui.core.GUIManager;
+import me.alen_alex.diamondbank.model.Transaction;
+import me.alen_alex.diamondbank.utils.InternalPlaceholders;
 import me.alen_alex.diamondbank.utils.modules.MessageUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -37,11 +41,19 @@ public class DepositMenu extends AbstractGUI {
 
                 final GuiItem depositButton = ItemBuilder.from(manager.getPlugin().getConfiguration().getDepositDepositButton().getItemStack())
                         .name(MessageUtils.serializeToComponent(manager.getPlugin().getConfiguration().getDepositDepositButton().getName()))
-                        .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getDepositDepositButton().getLore()))
+                        .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getDepositDepositButton().getLore(
+                                new InternalPlaceholders("%min-deposit%",manager.getPlugin().getConfiguration().getMinAmountNeededToDeposit())
+                        )))
                         .asGuiItem();
 
                 gui.setDefaultClickAction(event -> {
                     if(event.getCurrentItem() == null) {
+                        return;
+                    }
+
+                    if(event.getCurrentItem().getAmount() < manager.getPlugin().getConfiguration().getMinAmountNeededToDeposit()){
+                        MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getReqMinAmount(new InternalPlaceholders("%min%",manager.getPlugin().getConfiguration().getMinAmountNeededToDeposit())));
+                        event.setCancelled(true);
                         return;
                     }
 
@@ -52,30 +64,43 @@ public class DepositMenu extends AbstractGUI {
                                 .asGuiItem());
                         player.getInventory().setItem(event.getSlot(),null);
 
+                        final GuiItem item = gui.getGuiItem(manager.getPlugin().getConfiguration().getDepositDepositButton().getSlot());
+
                         final GuiItem yesButton = ItemBuilder.from(manager.getPlugin().getConfiguration().getDepositConfirmationYes().getItemStack())
                                 .name(MessageUtils.serializeToComponent(manager.getPlugin().getConfiguration().getDepositConfirmationYes().getName()))
                                 .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getDepositConfirmationYes().getLore()))
                                 .asGuiItem(event2 -> {
-                                    //TODO Do transaction
-                                    player.sendMessage("Do transactions");
+                                    final Transaction newTrans = new Transaction(player.getUniqueId(),item.getItemStack().getAmount(), TransactionWay.DEPOSIT);
+                                    manager.getPlugin().getManager().processTransaction(newTrans);
+                                    gui.updateItem(manager.getPlugin().getConfiguration().getDepositDepositButton().getSlot(),depositButton);
+                                    gui.close(player);
+                                    MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getDepositedDiamonds(new InternalPlaceholders("%amount%",newTrans.getAmount())));
                                 });
-
                         final GuiItem noButton = ItemBuilder.from(manager.getPlugin().getConfiguration().getDepositConfirmationNo().getItemStack())
                                 .name(MessageUtils.serializeToComponent(manager.getPlugin().getConfiguration().getDepositConfirmationNo().getName()))
                                 .lore(MessageUtils.serializeToComponents(manager.getPlugin().getConfiguration().getDepositConfirmationNo().getLore()))
                                 .asGuiItem(event3 -> {
+                                    if(player.getInventory().firstEmpty() == -1){
+                                        MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getNoSpace());
+                                        if(manager.getPlugin().getConfiguration().isDropOnFull()){
+                                            player.getWorld().dropItem(player.getLocation(),item.getItemStack());
+                                            MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getDroppedDiamond());
+                                        }
+                                    }else {
+                                        player.getInventory().addItem(item.getItemStack());
+                                    }
 
                                     gui.removeItem(manager.getPlugin().getConfiguration().getDepositConfirmationYes().getSlot());
                                     gui.removeItem(manager.getPlugin().getConfiguration().getDepositConfirmationNo().getSlot());
 
                                     gui.updateItem(manager.getPlugin().getConfiguration().getDepositDepositButton().getSlot(),depositButton);
                                     gui.updateTitle(manager.getPlugin().getConfiguration().getDepositMenuName());
+
                                 });
 
-                        gui.updateItem(manager.getPlugin().getConfiguration().getDepositConfirmationYes().getSlot(),yesButton);
-                        gui.updateItem(manager.getPlugin().getConfiguration().getDepositConfirmationNo().getSlot(),noButton);
+                        gui.setItem(manager.getPlugin().getConfiguration().getDepositConfirmationYes().getSlot(),yesButton);
+                        gui.setItem(manager.getPlugin().getConfiguration().getDepositConfirmationNo().getSlot(),noButton);
                         gui.update();
-                        event.setCancelled(true);
                     }
                 });
 
@@ -86,10 +111,10 @@ public class DepositMenu extends AbstractGUI {
                     if(itemAtClose.getItemStack().getType() != Material.DIAMOND)
                         return;
                     if(player.getInventory().firstEmpty() == -1){
+                        MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getNoSpace());
                         if(manager.getPlugin().getConfiguration().isDropOnFull()){
-                            //TODO Do drop
                             player.getWorld().dropItem(player.getLocation(),itemAtClose.getItemStack());
-                            player.sendMessage("Dropped item due to insufficient space");
+                            MessageUtils.sendColorizedMessage(player,manager.getPlugin().getConfiguration().getDroppedDiamond());
                         }
                     }else {
                         player.getInventory().addItem(itemAtClose.getItemStack());

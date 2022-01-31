@@ -3,6 +3,7 @@ package me.alen_alex.diamondbank.utils.modules;
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import me.alen_alex.diamondbank.utils.UtilityManager;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -38,5 +39,9 @@ public class MessageUtils {
     */
     public static String deColorize(@NotNull String message){
         return IridiumColorAPI.stripColorFormatting(message);
+    }
+
+    public static void sendColorizedMessage(@NotNull Player player, String message){
+        player.sendMessage(message);
     }
 }
